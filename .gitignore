@@ -1,2 +1,5 @@
 .DS_Store
 Thumbs.db
+
+# local screenshots kept out of the repo
+screenshot-*.png
