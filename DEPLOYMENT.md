@@ -10,7 +10,7 @@
 | Host | GitHub Pages — free tier, `main` branch, root path |
 | Stack | Static HTML, no build step — matches the content map's plain multi-page plan |
 | HTTPS | Enforced (`Strict-Transport-Security` present) |
-| First commit | `0ff3f3d` — "Empty but live: name, claim, and a URL that resolves" |
+| First commit | `be9aa31` — "Empty but live: name, claim, and a URL that resolves" |
 
 ## Verified live, not just deployed
 
