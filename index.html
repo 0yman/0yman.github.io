@@ -3,64 +3,82 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ayman</title>
-<meta name="description" content="Backend & AI systems engineer. Portfolio in progress." />
+<title>Ayman Eldaly — AI Systems</title>
+<meta name="description" content="AI engineer. Retrieval pipelines, tool-calling agents, and the evaluation harnesses that decide whether they ship. Two case studies with measured results." />
+<meta property="og:title" content="Ayman Eldaly — AI Systems" />
+<meta property="og:description" content="Retrieval pipelines, tool-calling agents, and the evaluation harnesses that decide whether they ship." />
+<meta property="og:type" content="website" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iOCIgZmlsbD0iI0Y3RjVFRiIvPjx0ZXh0IHg9IjMyIiB5PSI0NSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjM4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOEE1QTFFIj5BPC90ZXh0Pjwvc3ZnPg==" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  /* Palette and type carried over from the previous version of this site:
+     warm paper, burnt amber, Fraunces over Source Sans 3. What is new is a
+     mono voice for measured values, because most of what is worth saying on
+     this page is a number. */
   :root {
-    --bg: #F7F5EF;
-    --text: #17211F;
-    --text-soft: #4B5652;
-    --main: #8A5A1E;
-    --line: #DEDACB;
-    --font-head: "Fraunces", Georgia, serif;
-    --font-body: "Source Sans 3", -apple-system, "Segoe UI", sans-serif;
-    --font-mono: ui-monospace, Consolas, "SF Mono", monospace;
+    --bg:         #F7F5EF;
+    --bg-sunk:    #F1EEE4;
+    --text:       #17211F;
+    --text-soft:  #4B5652;
+    --text-faint: #7A837E;
+    --main:       #8A5A1E;
+    --main-soft:  #EDE4D4;
+    --line:       #DEDACB;
+    --line-soft:  #E8E4D8;
+    --font-head:  "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body:  "Source Sans 3", -apple-system, "Segoe UI", Helvetica, sans-serif;
+    --font-mono:  ui-monospace, "SF Mono", Consolas, "Liberation Mono", monospace;
   }
+
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
   body {
     margin: 0;
-    min-height: 100vh;
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-body);
     font-size: 17px;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
   }
+
   .wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 640px;
-    width: 100%;
+    max-width: 44rem;
     margin: 0 auto;
-    padding: clamp(3rem, 10vw, 6rem) clamp(1.5rem, 6vw, 2.5rem);
+    padding: 0 clamp(1.5rem, 6vw, 2.5rem);
   }
+
+  a { color: var(--main); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible { outline: 2px solid var(--main); outline-offset: 3px; border-radius: 2px; }
+
+  /* ---------- hero ---------- */
+
+  header { padding: clamp(4rem, 12vw, 7rem) 0 clamp(2.5rem, 7vw, 4rem); }
+
   .name {
     font-family: var(--font-head);
     font-size: clamp(2.4rem, 9vw, 3.6rem);
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.05;
     margin: 0;
     color: var(--main);
+    letter-spacing: -0.01em;
   }
+
   .claim {
     font-family: var(--font-head);
     font-size: clamp(1.15rem, 4.2vw, 1.5rem);
     font-weight: 600;
     line-height: 1.35;
     margin: 1.25rem 0 0;
-    max-width: 22ch;
-    color: var(--text);
+    max-width: 24ch;
+    text-wrap: balance;
   }
+
   .role {
     font-family: var(--font-mono);
     font-size: 0.74rem;
@@ -69,33 +87,315 @@
     color: var(--text-soft);
     margin: 1.75rem 0 0;
   }
+
+  .intro { margin: 1.75rem 0 0; color: var(--text-soft); max-width: 60ch; }
+  .intro strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- sections ---------- */
+
+  section { padding: clamp(2.5rem, 7vw, 3.75rem) 0; border-top: 1px solid var(--line); }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0 0 1.75rem;
+  }
+
+  /* ---------- case studies ---------- */
+
+  .case + .case { margin-top: clamp(3rem, 8vw, 4.5rem); }
+
+  .case h2 {
+    font-family: var(--font-head);
+    font-size: clamp(1.5rem, 5vw, 1.95rem);
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .case .what { margin: 0.75rem 0 0; color: var(--text-soft); }
+
+  /* The measured result is the reason each case study exists, so it gets the
+     one piece of visual weight on the page rather than the heading doing it. */
+  .finding {
+    margin: 1.5rem 0 0;
+    padding: 1.1rem 1.35rem;
+    background: var(--bg-sunk);
+    border-left: 3px solid var(--main);
+  }
+
+  .finding p { margin: 0; }
+  .finding p + p { margin-top: 0.7rem; }
+  .finding .label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--main);
+    margin-bottom: 0.5rem;
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+
+  .metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 2.25rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .metrics div { display: flex; flex-direction: column; gap: 0.15rem; }
+
+  .metrics dt {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .metrics dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stack {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-faint);
+    margin: 1.4rem 0 0;
+    line-height: 1.7;
+  }
+
+  .links { margin: 0.9rem 0 0; font-size: 0.95rem; }
+
+  /* ---------- principles ---------- */
+
+  .principles { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1.6rem; }
+  .principles h3 {
+    font-family: var(--font-head);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.3rem;
+  }
+  .principles p { margin: 0; color: var(--text-soft); max-width: 62ch; }
+
+  /* ---------- about ---------- */
+
+  .about p { margin: 0 0 0.9rem; color: var(--text-soft); max-width: 62ch; }
+  .about p:last-child { margin-bottom: 0; }
+  .about strong { color: var(--text); font-weight: 600; }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
   footer {
     border-top: 1px solid var(--line);
-    padding: 1.25rem clamp(1.5rem, 6vw, 2.5rem);
-    max-width: 640px;
-    width: 100%;
-    margin: 0 auto;
+    padding: 1.5rem 0 2.5rem;
   }
+
   footer p {
     margin: 0;
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    color: var(--text-soft);
+    letter-spacing: 0.05em;
+    color: var(--text-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
   }
 </style>
 </head>
 <body>
 
-  <main class="wrap">
-    <h1 class="name">Ayman</h1>
-    <p class="claim">I build AI features that refuse to be confidently wrong.</p>
-    <p class="role">Backend &amp; AI Systems</p>
-  </main>
+  <div class="wrap">
 
-  <footer>
-    <p>Portfolio in progress — case studies landing soon.</p>
-  </footer>
+    <header>
+      <h1 class="name">Ayman Eldaly</h1>
+      <p class="claim">I build AI features that refuse to be confidently wrong.</p>
+      <p class="role">AI Systems &middot; Retrieval &middot; Evaluation</p>
+      <p class="intro">
+        Final-year Data Science &amp; AI student at Alexandria University and an
+        ICPC&nbsp;(ECPC) qualifier. Most of what I build is a retrieval pipeline, an
+        agent, or <strong>the evaluation harness that decides whether either one is
+        good enough to ship</strong>. Both case studies below run offline with no API
+        key, so the numbers are checkable rather than claimed.
+      </p>
+    </header>
+
+    <section id="work">
+      <p class="eyebrow">Case studies</p>
+
+      <article class="case">
+        <h2>Hybrid RAG Service</h2>
+        <p class="what">
+          Retrieval-augmented question answering. FAISS dense retrieval and BM25 fused
+          with Reciprocal Rank Fusion, citations validated against the passages they
+          point at, and abstention when the corpus does not support an answer.
+        </p>
+
+        <div class="finding">
+          <p class="label">What measuring it showed</p>
+          <p>
+            I scored two query distributions separately instead of one blended set.
+            On terse keyword queries, dense retrieval fell from
+            <span class="num">0.935</span> to <span class="num">0.667</span>
+            recall@3 &mdash; where BM25 scored <span class="num">1.000</span>.
+          </p>
+          <p>
+            So the hybrid fusion I had assumed was the obvious win came
+            <em>second on both</em> query sets rather than first on either. I reported
+            that, instead of tuning the benchmark until it agreed with me.
+          </p>
+        </div>
+
+        <dl class="metrics">
+          <div><dt>Abstention accuracy</dt><dd>0.943</dd></div>
+          <div><dt>Citation rate</dt><dd>0.968</dd></div>
+          <div><dt>Corpus</dt><dd>459 chunks</dd></div>
+          <div><dt>Tests, offline</dt><dd>100</dd></div>
+        </dl>
+
+        <p class="stack">
+          Python &middot; FAISS &middot; BM25 &middot; sentence-transformers &middot;
+          OpenAI &amp; Gemini APIs &middot; FastAPI &middot; Docker &middot; GitHub Actions
+        </p>
+        <p class="links">
+          <a href="https://github.com/0yman/hybrid-rag-service">Code and full results &rarr;</a>
+        </p>
+      </article>
+
+      <article class="case">
+        <h2>Port Analyst Agent</h2>
+        <p class="what">
+          A tool-calling agent that answers analytical questions about container
+          terminal operations by writing read-only SQL against a DuckDB star schema,
+          with a bounded reasoning loop, self-correction on query errors, and a full
+          trace of every tool call and token.
+        </p>
+
+        <div class="finding">
+          <p class="label">What measuring it showed</p>
+          <p>
+            An ablation withheld the schema from the system prompt and made the agent
+            discover it through tools. Accuracy was identical &mdash; and prompt tokens
+            went <em>up</em> <span class="num">5%</span>, because discovery calls
+            accumulate in the conversation faster than the schema block ever cost.
+          </p>
+          <p>
+            What did change was knowing when something is <em>absent</em>: asked for
+            revenue the warehouse does not record, the agent without the schema spent
+            its entire step budget hunting for a column to hold it. Correct declines
+            halved, from <span class="num">1.000</span> to
+            <span class="num">0.500</span>.
+          </p>
+        </div>
+
+        <dl class="metrics">
+          <div><dt>Answer accuracy</dt><dd>0.944</dd></div>
+          <div><dt>Correct declines</dt><dd>1.000</dd></div>
+          <div><dt>Warehouse</dt><dd>21K+ rows</dd></div>
+          <div><dt>Tests, offline</dt><dd>115</dd></div>
+        </dl>
+
+        <p class="stack">
+          Python &middot; OpenAI &amp; Gemini function calling &middot; DuckDB &middot;
+          sqlglot &middot; FastAPI &middot; Docker
+        </p>
+        <p class="links">
+          <a href="https://github.com/0yman/port-analyst-agent">Code and full results &rarr;</a>
+        </p>
+      </article>
+    </section>
+
+    <section id="how">
+      <p class="eyebrow">How I work</p>
+      <ul class="principles">
+        <li>
+          <h3>The evaluation is the product</h3>
+          <p>
+            Anyone can assemble a retrieval pipeline. The harder and more useful part
+            is the harness that tells you when it is wrong &mdash; and both of these
+            projects exist mainly because building that harness changed what I shipped.
+            Twice it contradicted me, and both times I wrote down the contradiction.
+          </p>
+        </li>
+        <li>
+          <h3>Guardrails are controls, not requests</h3>
+          <p>
+            Asking a model to "only write SELECT statements" is a request. Parsing
+            every statement before it reaches the database &mdash; rejecting stacked
+            statements, DML hidden inside a CTE, and DuckDB's file-read functions,
+            over a connection that is independently read-only &mdash; is a control.
+            Everything that reaches a model is untrusted input, including a row of
+            data echoed back into its own context.
+          </p>
+        </li>
+        <li>
+          <h3>No agent framework</h3>
+          <p>
+            The chunking, the hybrid retrieval, the rank fusion, the agent loop, the
+            tool dispatch and the provider adapters are all written out. Partly for
+            control, but mostly because the interesting decisions live exactly where a
+            framework would have quietly made them for me.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="about" class="about">
+      <p class="eyebrow">Background</p>
+      <p>
+        <strong>AI engineering intern, Alexandria Port Authority</strong> &mdash;
+        engineered SQL over 800,000+ maritime logistics records, applied regression to
+        the drivers of container dwell time, and automated the data validation that had
+        been eating five hours a week.
+      </p>
+      <p>
+        <strong>Data analyst trainee, Digital Egypt Pioneers Initiative</strong> &mdash;
+        cleaned large historical datasets, ran exploratory analysis, and built the
+        Power BI reporting a team of four worked from.
+      </p>
+      <p>
+        Currently in my final year, graduating 2027, and looking for AI engineering
+        roles. I read and write English and Arabic.
+      </p>
+      <ul class="contact">
+        <li><a href="mailto:aymaneldaly72@gmail.com">aymaneldaly72@gmail.com</a></li>
+        <li><a href="https://github.com/0yman">github.com/0yman</a></li>
+        <li><a href="https://linkedin.com/in/ayman-eldaly">linkedin.com/in/ayman-eldaly</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>Alexandria, Egypt</p>
+    </footer>
+
+  </div>
 
 </body>
 </html>
