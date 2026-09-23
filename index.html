@@ -251,37 +251,42 @@
       <p class="eyebrow">Case studies</p>
 
       <article class="case">
-        <h2>Hybrid RAG Service</h2>
+        <h2>Ask Your Documents</h2>
         <p class="what">
-          Retrieval-augmented question answering. FAISS dense retrieval and BM25 fused
-          with Reciprocal Rank Fusion, citations validated against the passages they
-          point at, and abstention when the corpus does not support an answer.
+          Ask questions of your own PDFs and notes, and see exactly which passage
+          each answer came from. Double-click to run; no API key needed. FAISS
+          dense retrieval and BM25 fused with Reciprocal Rank Fusion, citations
+          validated against the passages they point at, and a plain "not in your
+          documents" when the answer isn't there.
         </p>
 
         <div class="finding">
           <p class="label">What measuring it showed</p>
           <p>
-            I scored two query distributions separately instead of one blended set.
-            On terse keyword queries, dense retrieval fell from
-            <span class="num">0.935</span> to <span class="num">0.667</span>
-            recall@3 &mdash; where BM25 scored <span class="num">1.000</span>.
+            On terse keyword queries, dense retrieval dropped to
+            <span class="num">0.667</span>&ndash;<span class="num">0.800</span>
+            recall@3 where BM25 scored <span class="num">1.000</span> &mdash; and at
+            k=3, BM25 alone was the safest retriever, not the hybrid I had built.
           </p>
           <p>
-            So the hybrid fusion I had assumed was the obvious win came
-            <em>second on both</em> query sets rather than first on either. I reported
-            that, instead of tuning the benchmark until it agreed with me.
+            Two later surprises came from the same harness. Swapping the embedding
+            runtime for a 10&times; smaller install moved recall
+            <span class="num">13</span> points: the &ldquo;same&rdquo; model gave
+            different vectors. And CI scored differently from my laptop with
+            identical code, because rank-fusion ties were broken by
+            <em>absolute file paths</em>.
           </p>
         </div>
 
         <dl class="metrics">
-          <div><dt>Abstention accuracy</dt><dd>0.943</dd></div>
-          <div><dt>Citation rate</dt><dd>0.968</dd></div>
-          <div><dt>Corpus</dt><dd>459 chunks</dd></div>
-          <div><dt>Tests, offline</dt><dd>100</dd></div>
+          <div><dt>Correct declines</dt><dd>1.000</dd></div>
+          <div><dt>Citation rate</dt><dd>1.000</dd></div>
+          <div><dt>Install</dt><dd>1 click</dd></div>
+          <div><dt>Tests, offline</dt><dd>161</dd></div>
         </dl>
 
         <p class="stack">
-          Python &middot; FAISS &middot; BM25 &middot; sentence-transformers &middot;
+          Python &middot; FAISS &middot; BM25 &middot; ONNX Runtime &middot;
           OpenAI &amp; Gemini APIs &middot; FastAPI &middot; Docker &middot; GitHub Actions
         </p>
         <p class="links">
@@ -341,7 +346,7 @@
             Anyone can assemble a retrieval pipeline. The harder and more useful part
             is the harness that tells you when it is wrong &mdash; and both of these
             projects exist mainly because building that harness changed what I shipped.
-            Twice it contradicted me, and both times I wrote down the contradiction.
+            It has contradicted me more than once, and each time I wrote it down.
           </p>
         </li>
         <li>
