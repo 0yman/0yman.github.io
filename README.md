@@ -13,7 +13,7 @@ with the measured result that actually drove the design:
 | Case study | The finding |
 |---|---|
 | [hybrid-rag-service](https://github.com/0yman/hybrid-rag-service) | Dense retrieval falls from 0.935 to 0.667 recall@3 on keyword queries where BM25 scores 1.000 — so the hybrid fusion came second on both query sets rather than first on either |
-| [port-analyst-agent](https://github.com/0yman/port-analyst-agent) | Withholding the schema from the system prompt *raises* prompt tokens 5% and halves correct declines on unanswerable questions |
+| [ask-your-data](https://github.com/0yman/ask-your-data) | Withholding the schema from the system prompt *raises* prompt tokens 5% and halves correct declines on unanswerable questions |
 
 Single page by choice. A case study is worth its own URL when it has more to
 say than fits in a screen; these two each have one number worth remembering,
