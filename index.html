@@ -64,7 +64,7 @@
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
   .skip { position: absolute; left: 16px; top: -60px; z-index: 30; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 500; text-decoration: none; transition: top .2s var(--ease); }
   .skip:focus { top: 12px; }
-  .wrap { width: 100%; max-width: 64rem; margin: 0 auto; padding: 0 24px; }
+  .wrap { width: 100%; max-width: 76rem; margin: 0 auto; padding: 0 24px; }
   @media (max-width: 640px) { .wrap { padding: 0 16px; } }
   .num { font-family: var(--mono); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ink); letter-spacing: 0; }
 
@@ -79,7 +79,11 @@
   @media (max-width: 560px) { .nav a.opt { display: none; } }
 
   /* ---------- hero ---------- */
-  .hero { padding: clamp(56px, 10vw, 104px) 0 clamp(40px, 7vw, 64px); border-top: 0; }
+  .hero { padding: clamp(56px, 10vw, 104px) 0 clamp(40px, 7vw, 64px); border-top: 0; display: grid; gap: 48px 56px; grid-template-columns: minmax(0, 1fr); align-items: center; }
+  @media (min-width: 1040px) {
+    .hero { grid-template-columns: minmax(0, 1fr) clamp(24rem, 36vw, 31rem); }
+    .hero h1 { font-size: clamp(44px, 4.4vw, 60px); }
+  }
   .hero h1 { margin: 0; max-width: 17ch; font-size: clamp(34px, 5.6vw, 58px); line-height: 1.05; font-weight: 600; letter-spacing: -.035em; text-wrap: balance; }
   .hero .who { margin: 20px 0 0; font-size: 15px; font-weight: 500; color: var(--ink-3); }
   .hero .intro { margin: 18px 0 0; max-width: 58ch; font-size: 18px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
@@ -108,6 +112,28 @@
     -webkit-mask-image: radial-gradient(400px circle at var(--hx, 72%) var(--hy, 30%), #000, transparent 72%);
     mask-image: radial-gradient(400px circle at var(--hx, 72%) var(--hy, 30%), #000, transparent 72%); }
 
+  /* ---------- the recorded run: what the agent did, step by step ---------- */
+  .run { margin: 0; padding: 16px 18px 14px; border: 1px solid var(--line); border-radius: 16px;
+    background: color-mix(in srgb, var(--s1) 86%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    box-shadow: var(--edge), var(--lift), 0 30px 80px -40px rgba(94, 106, 210, .35); }
+  .run-head { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); font-size: 12.5px; line-height: 1.4; color: var(--ink-3); }
+  .replay { margin-left: auto; flex: none; height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--s2); color: var(--ink-2); font: 500 12.5px var(--sans); cursor: pointer; transition: color .15s var(--ease), border-color .15s var(--ease); }
+  .replay:hover { color: var(--ink); border-color: var(--line-strong); }
+  .replay:active { transform: translateY(1px); }
+  .run-q { margin: 14px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--s2); border: 1px solid var(--line); color: var(--ink); font-size: 14.5px; line-height: 1.5; }
+  .run-steps { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .run-steps li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 12px; padding-left: 14px; border-left: 1px solid var(--line-strong); }
+  .run-steps .tool { font: 500 12.5px/1.5 var(--mono); letter-spacing: 0; color: var(--accent-text); }
+  .run-steps .t { font: 12px/1.5 var(--mono); letter-spacing: 0; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .run-steps code { grid-column: 1 / -1; min-height: 1.55em; font: 12.5px/1.55 var(--mono); letter-spacing: 0; color: var(--ink-2); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .run-steps .out { grid-column: 1 / -1; font: 500 12.5px/1.5 var(--mono); letter-spacing: 0; color: var(--ink); }
+  .run-steps .out::before { content: "\2192  "; color: var(--ink-3); }
+  .run-steps .check { display: block; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); border-left-color: var(--accent); }
+  .tick { margin-right: 8px; font-weight: 600; color: var(--accent-text); }
+  .run-a { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--line); color: var(--ink); font-size: 15px; line-height: 1.5; }
+  .run-steps .ghost { color: transparent; }
+  .run-foot { margin: 8px 0 0; font-size: 12px; color: var(--ink-3); }
+
   /* ---------- sections ---------- */
   section { padding: clamp(44px, 8vw, 72px) 0; border-top: 1px solid var(--line); }
   .section-title { margin: 0 0 8px; font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
@@ -124,15 +150,24 @@
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; }
   @media (hover: hover) and (pointer: fine) { .project:hover::before, .project:hover::after { opacity: 1; } }
-  @media (min-width: 860px) { .project { grid-template-columns: minmax(0, 1fr) 15rem; } .project .side { border-left: 1px solid var(--line); padding-left: 32px; } }
+  .project { grid-template-areas: "head" "finding" "foot" "side"; }
+  .project .head { grid-area: head; } .project .finding { grid-area: finding; } .project .foot { grid-area: foot; } .project .side { grid-area: side; }
+  @media (min-width: 860px) {
+    .project { grid-template-columns: minmax(0, 1fr) 15rem; grid-template-areas: "head side" "finding side" "foot side"; }
+    .project .side { border-left: 1px solid var(--line); padding-left: 32px; }
+  }
+  @media (min-width: 1140px) {
+    .project { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) 13.5rem; grid-template-rows: auto 1fr; grid-template-areas: "head finding side" "foot finding side"; }
+    .project .foot { align-self: end; }
+  }
   .project h3 { margin: 0; font-size: clamp(22px, 3vw, 26px); font-weight: 600; letter-spacing: -.02em; }
   .project .kicker { margin: 6px 0 0; font-size: 14px; color: var(--ink-3); }
   .project .what { margin: 16px 0 0; color: var(--ink-2); max-width: 62ch; text-wrap: pretty; }
-  .finding { margin: 20px 0 0; padding: 16px 18px; border-radius: 12px; background: var(--s2); border: 1px solid var(--line); }
+  .finding { margin: 0; align-self: start; padding: 16px 18px; border-radius: 12px; background: var(--s2); border: 1px solid var(--line); }
   .finding .label { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--accent-text); }
   .finding p { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.6; text-wrap: pretty; }
   .finding p + p { margin-top: 10px; }
-  .stack { margin: 18px 0 0; font: 13px/1.7 var(--mono); color: var(--ink-3); letter-spacing: 0; }
+  .stack { margin: 0; font: 13px/1.7 var(--mono); color: var(--ink-3); letter-spacing: 0; }
   .links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 16px 0 0; font-size: 15px; font-weight: 500; }
   .metrics { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; align-content: start; }
   @media (min-width: 860px) { .metrics { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
@@ -142,7 +177,22 @@
   .metrics dd.note { order: 3; font: 400 12px/1.4 var(--sans); letter-spacing: 0; color: var(--ink-3); }
 
   /* ---------- now ---------- */
+  .now-grid { display: grid; gap: 32px 64px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+  @media (min-width: 1040px) { .now-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 32rem); } }
   .now { border-left: 2px solid var(--accent); padding: 4px 0 4px 20px; max-width: 64ch; }
+  .pipeline { margin: 0; padding: 0; list-style: none; border: 1px solid var(--line); border-radius: 14px; background: var(--s1); box-shadow: var(--edge), var(--lift); overflow: hidden; }
+  .pipeline li { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto; gap: 4px 14px; align-items: baseline; padding: 12px 16px; font-size: 14px; line-height: 1.5; }
+  .pipeline li + li { border-top: 1px solid var(--line); }
+  .pipeline .stage { font-weight: 600; color: var(--ink); }
+  .pipeline .what { color: var(--ink-2); }
+  .pipeline .state { padding: 1px 8px; border-radius: 6px; border: 1px solid var(--line); font: 500 12px/1.6 var(--mono); letter-spacing: 0; color: var(--ink-3); }
+  .pipeline .done .state { color: var(--accent-text); background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+  .pipeline .next { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  .pipeline .next .state { color: #fff; background: var(--accent); border-color: var(--accent); }
+  @media (max-width: 560px) {
+    .pipeline li { grid-template-columns: minmax(0, 1fr) auto; }
+    .pipeline .what { grid-column: 1 / -1; grid-row: 2; }
+  }
   .now h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
   .now p { margin: 10px 0 0; color: var(--ink-2); text-wrap: pretty; }
   .now .status { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 14px; color: var(--ink-3); }
@@ -161,7 +211,12 @@
   .roles h3 { margin: 0; font-size: 16px; font-weight: 600; }
   .roles .when { margin: 2px 0 0; font-size: 13px; color: var(--ink-3); }
   .roles p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
-  .contact { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 32px 0 0; padding: 0; list-style: none; font-size: 15px; }
+  .bg-grid { display: grid; gap: 32px 64px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+  @media (min-width: 1040px) { .bg-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); } }
+  .reach { padding: 22px 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--s1); box-shadow: var(--edge), var(--lift); }
+  .reach h3 { margin: 0; font-size: 16px; font-weight: 600; }
+  .reach p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
+  .contact { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 15px; overflow-wrap: anywhere; }
 
   footer { border-top: 1px solid var(--line); }
   footer .wrap { padding-top: 20px; padding-bottom: 36px; font-size: 13px; color: var(--ink-3); }
@@ -175,6 +230,10 @@
     /* hidden only when the script is there to reveal it */
     .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--d, 0) * 90ms); }
     .js .reveal.in { opacity: 1; transform: none; }
+    .js .run .step, .js .run .out { opacity: 0; transform: translateY(6px); transition: opacity .4s var(--ease), transform .4s var(--ease); }
+    .js .run .step.on, .js .run .out.on { opacity: 1; transform: none; }
+    .run .typed.typing::after { content: "\258D"; color: var(--accent-text); animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -202,6 +261,7 @@
   <div class="aura" aria-hidden="true"></div>
   <div class="wrap">
     <section class="hero" aria-labelledby="claim">
+      <div class="hero-copy">
       <h1 id="claim" class="rise" style="--i:0">I build AI features that refuse to be confidently wrong.</h1>
       <p class="who rise" style="--i:1">AI engineer · retrieval, agents and evaluation</p>
       <p class="intro rise" style="--i:2">
@@ -215,10 +275,30 @@
         <a class="btn" href="https://github.com/0yman">GitHub</a>
       </div>
       <ul class="facts rise" style="--i:4" aria-label="At a glance">
-        <li><span class="num">2</span>projects with published evaluations</li>
-        <li><span class="num">411</span>tests that run offline</li>
+        <li><span class="num">2</span>projects with public evaluations</li>
+        <li><span class="num">411</span>offline tests</li>
         <li><span class="num">1</span>live demo on open models</li>
       </ul>
+      </div>
+
+      <figure class="run rise" style="--i:3" aria-labelledby="run-title">
+        <figcaption class="run-head">
+          <span class="live" aria-hidden="true"></span>
+          <span id="run-title">Recorded run · <span translate="no">Ministral&nbsp;14B</span> · 541,909 sales rows</span>
+          <button class="replay" type="button" aria-label="Replay the run">Replay</button>
+        </figcaption>
+        <p class="run-q">What was the total revenue from sales, not counting returns or cancelled orders?</p>
+        <ol class="run-steps" translate="no">
+          <li class="step" data-ms="873"><span class="tool">describe_table</span><span class="t">0.9 s</span><code>online_retail</code></li>
+          <li class="step" data-ms="2342"><span class="tool">sample_rows</span><span class="t">2.3 s</span><code>online_retail, 10 rows</code></li>
+          <li class="step" data-ms="1379"><span class="tool">run_sql</span><span class="t">1.4 s</span><code>SELECT COUNT(*) FROM online_retail WHERE InvoiceNo LIKE 'C%'</code><span class="out">9,288 rows</span></li>
+          <li class="step" data-ms="2165"><span class="tool">run_sql</span><span class="t">2.2 s</span><code>SELECT SUM(Quantity * UnitPrice) AS total_revenue FROM online_retail WHERE InvoiceNo NOT LIKE 'C%' AND Quantity &gt; 0</code><span class="out">10,644,560.42</span></li>
+          <li class="step check" data-ms="959" translate="yes"><span class="tick" aria-hidden="true">✓</span>Every figure in the answer found in a query result</li>
+          <li class="step check" data-ms="250" translate="yes"><span class="tick" aria-hidden="true">✓</span>“£” taken out: the data never states a currency</li>
+        </ol>
+        <p class="run-a step" data-ms="300">The total revenue from sales, excluding returns or cancelled orders, is <b class="num">10,644,560.42</b>.</p>
+        <p class="run-foot step" data-ms="200">8.6 s end to end · 5 model steps · read-only SQL</p>
+      </figure>
     </section>
   </div>
 
@@ -228,7 +308,7 @@
       <p class="section-lead reveal">Each project exists because measuring it changed what I built.</p>
 
       <article class="project reveal" aria-labelledby="ayd">
-        <div class="main">
+        <div class="head">
           <h3 id="ayd">Ask Your Data</h3>
           <p class="kicker">A text-to-SQL agent, live on open models</p>
           <p class="what">
@@ -240,21 +320,23 @@
             graph, and its tools are an MCP server that <span translate="no">Claude&nbsp;Desktop</span>
             or Cursor can use.
           </p>
-          <div class="finding">
-            <p class="label">What measuring it showed</p>
-            <p>
-              A one-sentence prompt rule stopped the model inventing currency symbols, and
-              cost <span class="num">2.3</span> of <span class="num">12</span> hard questions:
-              the model's SQL changed along with its wording. The fix moved into code, after the
-              answer, where it cannot touch the queries.
-            </p>
-            <p>
-              The same code scored between <span class="num">8.3</span> and
-              <span class="num">10.7</span> on the hard set across sessions with nothing
-              changed. Since then every change runs interleaved with the committed code in the
-              same session, and only a gain that repeats counts.
-            </p>
-          </div>
+        </div>
+        <div class="finding">
+          <p class="label">What measuring it showed</p>
+          <p>
+            A one-sentence prompt rule stopped the model inventing currency symbols, and
+            cost <span class="num">2.3</span> of <span class="num">12</span> hard questions:
+            the model's SQL changed along with its wording. The fix moved into code, after the
+            answer, where it cannot touch the queries.
+          </p>
+          <p>
+            The same code scored between <span class="num">8.3</span> and
+            <span class="num">10.7</span> on the hard set across sessions with nothing
+            changed. Since then every change runs interleaved with the committed code in the
+            same session, and only a gain that repeats counts.
+          </p>
+        </div>
+        <div class="foot">
           <p class="stack" translate="no">Python · LangGraph · MCP · DuckDB · sqlglot · vLLM · FastAPI · Docker</p>
           <p class="links">
             <a href="https://ask-your-data-i67m.onrender.com">Live demo</a>
@@ -270,7 +352,7 @@
       </article>
 
       <article class="project reveal" aria-labelledby="rag">
-        <div class="main">
+        <div class="head">
           <h3 id="rag">Ask Your Documents</h3>
           <p class="kicker">Hybrid retrieval with cited answers</p>
           <p class="what">
@@ -279,21 +361,23 @@
             citations validated against the passages they point at, and a plain “not in your
             documents” when the answer is not there. Double-click to run, no API key needed.
           </p>
-          <div class="finding">
-            <p class="label">What measuring it showed</p>
-            <p>
-              On terse keyword queries, dense retrieval dropped to
-              <span class="num">0.667</span> to <span class="num">0.800</span> recall@3 where
-              BM25 scored <span class="num">1.000</span>, and at k=3 BM25 alone was the safest
-              retriever, not the hybrid I had built.
-            </p>
-            <p>
-              Swapping the embedding runtime for a ten times smaller install moved recall
-              <span class="num">13</span> points: the “same” model gave different vectors. And
-              CI scored differently from my laptop with identical code, because rank-fusion ties
-              were broken by absolute file paths.
-            </p>
-          </div>
+        </div>
+        <div class="finding">
+          <p class="label">What measuring it showed</p>
+          <p>
+            On terse keyword queries, dense retrieval dropped to
+            <span class="num">0.667</span> to <span class="num">0.800</span> recall@3 where
+            BM25 scored <span class="num">1.000</span>, and at k=3 BM25 alone was the safest
+            retriever, not the hybrid I had built.
+          </p>
+          <p>
+            Swapping the embedding runtime for a ten times smaller install moved recall
+            <span class="num">13</span> points: the “same” model gave different vectors. And
+            CI scored differently from my laptop with identical code, because rank-fusion ties
+            were broken by absolute file paths.
+          </p>
+        </div>
+        <div class="foot">
           <p class="stack" translate="no">Python · FAISS · BM25 · ONNX Runtime · OpenAI and Gemini APIs · FastAPI · Docker</p>
           <p class="links">
             <a href="https://github.com/0yman/hybrid-rag-service">Code and full results</a>
@@ -312,6 +396,7 @@
   <section id="now" aria-labelledby="now-title">
     <div class="wrap">
       <h2 class="section-title reveal" id="now-title">Now</h2>
+      <div class="now-grid">
       <div class="now reveal">
         <h3>AYD-0.1, a 9B SQL agent model</h3>
         <p>
@@ -321,6 +406,14 @@
           measured on free Kaggle GPUs, against the untuned model on the same questions.
         </p>
         <p class="status"><span class="live" aria-hidden="true"></span>In progress. Results go here once they are measured, not before.</p>
+      </div>
+      <ol class="pipeline reveal" aria-label="Where AYD-0.1 stands">
+        <li class="done"><span class="stage">Data</span><span class="what">6,106 BIRD questions over 52 DuckDB databases, each with its gold result</span><span class="state">ready</span></li>
+        <li class="done"><span class="stage">Teacher</span><span class="what"><span translate="no">Qwen3.8-27B</span>, 4-bit, served with vLLM across two T4 GPUs</span><span class="state">tested</span></li>
+        <li class="next"><span class="stage">Generation</span><span class="what">A conversation is kept only when its final result matches the gold one</span><span class="state">next</span></li>
+        <li><span class="stage">Training</span><span class="what">16-bit LoRA on <span translate="no">Qwen3.5-9B</span>, on the same two GPUs</span><span class="state">queued</span></li>
+        <li><span class="stage">Evaluation</span><span class="what">Against the untuned model, on the same questions</span><span class="state">queued</span></li>
+      </ol>
       </div>
     </div>
   </section>
@@ -361,6 +454,7 @@
   <section id="background" aria-labelledby="bg-title">
     <div class="wrap">
       <h2 class="section-title reveal" id="bg-title">Background</h2>
+      <div class="bg-grid">
       <ul class="roles">
         <li class="reveal">
           <h3>AI engineering intern, Alexandria Port Authority</h3>
@@ -378,15 +472,19 @@
         <li class="reveal">
           <h3>B.Sc. Computers and Data Science, Alexandria University</h3>
           <p class="when">Graduating 2027</p>
-          <p>Major in Data Science and Artificial Intelligence. Looking for AI engineering roles.
-          I read and write English and Arabic.</p>
+          <p>Major in Data Science and Artificial Intelligence.</p>
         </li>
       </ul>
-      <ul class="contact reveal" aria-label="Contact">
-        <li><a href="mailto:aymaneldaly72@gmail.com">aymaneldaly72@gmail.com</a></li>
-        <li><a href="https://github.com/0yman">github.com/0yman</a></li>
-        <li><a href="https://linkedin.com/in/ayman-eldaly">linkedin.com/in/ayman-eldaly</a></li>
-      </ul>
+      <aside class="reach reveal" aria-labelledby="reach-title">
+        <h3 id="reach-title">Get in touch</h3>
+        <p>Looking for AI engineering roles. Based in Alexandria, Egypt; I read and write English and Arabic.</p>
+        <ul class="contact" aria-label="Contact">
+          <li><a href="mailto:aymaneldaly72@gmail.com">aymaneldaly72@gmail.com</a></li>
+          <li><a href="https://github.com/0yman">github.com/0yman</a></li>
+          <li><a href="https://linkedin.com/in/ayman-eldaly">linkedin.com/in/ayman-eldaly</a></li>
+        </ul>
+      </aside>
+      </div>
     </div>
   </section>
 </main>
@@ -451,6 +549,59 @@
     }, { rootMargin: "-45% 0px -50% 0px" });
     links.forEach((_, id) => { const s = document.getElementById(id); if (s) spy.observe(s); });
     spy.observe(document.querySelector(".hero"));  // no id: back at the top, nothing is marked
+
+    // The hero card replays a recorded run: each step after its real model
+    // time, three times faster, then its SQL typed out and its result.
+    const run = document.querySelector(".run");
+    if (run) {
+      const steps = [...run.querySelectorAll(".step")];
+      const outs = [...run.querySelectorAll(".out")];
+      // Each query is typed over an invisible copy of itself, so the card is
+      // its final height from the start and nothing beside it moves.
+      const sql = new Map([...run.querySelectorAll("code")].map((code) => {
+        const text = code.textContent, typed = document.createElement("span"), ghost = document.createElement("span");
+        typed.className = "typed"; ghost.className = "ghost";
+        code.replaceChildren(typed, ghost);
+        return [code, { text, typed, ghost }];
+      }));
+      const typeTo = ({ text, typed, ghost }, i) => {
+        typed.textContent = text.slice(0, i); ghost.textContent = text.slice(i);
+        typed.classList.toggle("typing", i < text.length);
+      };
+      let timers = [];
+      const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+      const play = () => {
+        timers.forEach(clearTimeout);
+        timers = [];
+        if (calm) {
+          sql.forEach((q) => typeTo(q, q.text.length));
+          return [...steps, ...outs].forEach((el) => el.classList.add("on"));
+        }
+        [...steps, ...outs].forEach((el) => el.classList.remove("on"));
+        sql.forEach((q) => typeTo(q, 0));
+        let t = 250;
+        for (const step of steps) {
+          t += Number(step.dataset.ms) / 3;
+          at(t, () => step.classList.add("on"));
+          const code = step.querySelector("code");
+          if (!code) continue;
+          const q = sql.get(code), text = q.text, perChar = text.length > 40 ? 12 : 22;
+          for (let i = 1; i <= text.length; i++) at(t + i * perChar, () => typeTo(q, i));
+          t += text.length * perChar;
+          const out = step.querySelector(".out");
+          if (out) { t += 280; at(t, () => out.classList.add("on")); }
+        }
+      };
+      run.querySelector(".replay").addEventListener("click", play);
+      if ("IntersectionObserver" in window && !calm) {
+        const once = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) { once.disconnect(); setTimeout(play, 500); }
+        }, { threshold: 0.3 });
+        once.observe(run);
+      } else {
+        play();
+      }
+    }
 
     if (!mouse) return;
 
