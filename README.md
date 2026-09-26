@@ -1,36 +1,35 @@
 # 0yman.github.io
 
-Personal portfolio. Static HTML on GitHub Pages — no build step, no framework,
-no dependencies beyond two Google Fonts.
+Personal portfolio. Static HTML on GitHub Pages: no build step, no framework,
+no dependencies beyond one Google Fonts family.
 
 **Live:** https://0yman.github.io
 
-## Status
+## What is on it
 
-**Filled in.** The site now carries the two case studies it was promising, each
-with the measured result that actually drove the design:
+Two case studies, each with the measured result that changed the design, and
+the work in progress:
 
-| Case study | The finding |
+| Section | The finding |
 |---|---|
-| [hybrid-rag-service](https://github.com/0yman/hybrid-rag-service) | Dense retrieval falls from 0.935 to 0.667 recall@3 on keyword queries where BM25 scores 1.000 — so the hybrid fusion came second on both query sets rather than first on either |
-| [ask-your-data](https://github.com/0yman/ask-your-data) | Withholding the schema from the system prompt *raises* prompt tokens 5% and halves correct declines on unanswerable questions |
+| [ask-your-data](https://github.com/0yman/ask-your-data) | A one-sentence prompt rule against invented currency symbols cost 2.3 of 12 hard questions, so the fix moved into code after the answer. The same code scored 8.3 to 10.7 across sessions, so every change is now measured interleaved with the committed code. |
+| [hybrid-rag-service](https://github.com/0yman/hybrid-rag-service) | Dense retrieval falls to 0.667 recall@3 on keyword queries where BM25 scores 1.000, so at k=3 BM25 alone was the safest retriever, not the hybrid. |
+| Now | AYD-0.1, a 9B SQL agent model fine-tuned on execution-verified conversations. No numbers until they are measured. |
 
-Single page by choice. A case study is worth its own URL when it has more to
-say than fits in a screen; these two each have one number worth remembering,
-and the repositories hold the full results.
+Single page by choice. The repositories hold the full results.
 
 ## Stack
 
 | | |
 |---|---|
 | Host | GitHub Pages (free, `main` branch, root) |
-| Build | None — plain `index.html`, deploys on push |
-| Type | Fraunces (headings) + Source Sans 3 (body) + system mono (measured values), via Google Fonts |
-| Palette | bg `#F7F5EF` · sunk `#F1EEE4` · text `#17211F` · main `#8A5A1E` |
+| Build | None: plain `index.html`, deploys on push |
+| Type | Geist (text) and Geist Mono (measured values), via Google Fonts |
+| Palette | Light: canvas `#f7f8f9`, surface `#fdfdfd`, text `#0f1012`, accent `#5e6ad2`. Dark: canvas `#08090a`, surface `#0f1011`, text `#f7f8f8`, accent text `#9aa3ff` |
+| Theme | Light and dark follow the visitor's system setting |
 
-The palette and typefaces carry over from the first version of the site. What
-is new is the mono voice, which exists because most of what is worth saying
-here is a number.
+The design language matches the live demo of ask-your-data, so the portfolio
+and the product read as one body of work.
 
 ## Local preview
 
@@ -42,5 +41,6 @@ python -m http.server 8000
 ## Checks worth repeating after an edit
 
 - Every external link resolves (`curl -o /dev/null -w '%{http_code}' -L <url>`).
-- The page reads at 400px wide — no horizontal scroll, metrics wrap rather than clip.
-- Nothing on the page claims a number that is not in one of the two repositories.
+- The page reads at 375px wide in both themes, with no horizontal scroll.
+- Every text colour pair holds 4.5:1 contrast or better.
+- Nothing on the page claims a number that is not in one of the repositories.
