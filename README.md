@@ -26,11 +26,10 @@ Single page by choice. The repositories hold the full results.
 | Host | GitHub Pages (free, `main` branch, root) |
 | Build | None: plain `index.html`, deploys on push |
 | Type | Geist (text) and Geist Mono (measured values), via Google Fonts |
-| Palette | Light: canvas `#f7f8f9`, surface `#fdfdfd`, text `#0f1012`, accent `#5e6ad2`. Dark: canvas `#08090a`, surface `#0f1011`, text `#f7f8f8`, accent text `#9aa3ff` |
+| Palette | Neutral canvas with one emerald accent. Light: canvas `#f7f8f9`, surface `#fdfdfd`, text `#0f1012`, accent `#0d7d56` (white text). Dark: canvas `#08090a`, surface `#0f1011`, text `#f7f8f8`, accent `#2fbf8a` (near-black text), links `#34d399` |
 | Theme | Light and dark follow the visitor's system setting |
 
-The design language matches the live demo of ask-your-data, so the portfolio
-and the product read as one body of work.
+The layout and type match the live demo of ask-your-data; the accent is its own.
 
 ## Local preview
 
