@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<script>document.documentElement.classList.add("js")</script>
 <style>
   /* The same design language as the live demo (ask-your-data): a quiet
      neutral canvas, surfaces told apart by 1px hairlines, one lavender-blue
@@ -33,6 +34,9 @@
     --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     --ease: cubic-bezier(.16, 1, .3, 1);
+    /* light: a wash over the hero, a dot grid the pointer lights, a card glow */
+    --light: rgba(94, 106, 210, .15); --glow: rgba(94, 106, 210, .10);
+    --glow-edge: rgba(94, 106, 210, .8); --dot: rgba(15, 16, 18, .22);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -42,6 +46,8 @@
       --accent-text: #9aa3ff; --accent-soft: rgba(94, 106, 210, .16);
       --edge: inset 0 1px 0 rgba(255, 255, 255, .05);
       --lift: 0 0 0 transparent;
+      --light: rgba(190, 196, 255, .16); --glow: rgba(160, 168, 255, .10);
+      --glow-edge: rgba(170, 178, 255, .85); --dot: rgba(255, 255, 255, .2);
     }
   }
 
@@ -69,7 +75,7 @@
   .mark { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 600; }
   .nav { display: flex; gap: 4px; }
   .nav a { color: var(--ink-3); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 10px; border-radius: 8px; transition: color .15s var(--ease), background .15s var(--ease); }
-  .nav a:hover { color: var(--ink); background: var(--s2); }
+  .nav a:hover, .nav a[aria-current="true"] { color: var(--ink); background: var(--s2); }
   @media (max-width: 560px) { .nav a.opt { display: none; } }
 
   /* ---------- hero ---------- */
@@ -81,11 +87,26 @@
   .btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--s2); color: var(--ink); font-size: 15px; font-weight: 500; text-decoration: none; transition: background .15s var(--ease), border-color .15s var(--ease), transform .15s var(--ease); }
   .btn:hover { background: var(--s1); border-color: var(--line-strong); }
   .btn:active { transform: translateY(1px); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn.primary:hover { background: var(--accent-press); border-color: var(--accent-press); }
+  .btn.primary { position: relative; overflow: hidden; background: var(--accent); border-color: var(--accent); color: #fff; transition: background .15s var(--ease), border-color .15s var(--ease), transform .15s var(--ease), box-shadow .3s var(--ease); }
+  .btn.primary:hover { background: var(--accent-press); border-color: var(--accent-press); box-shadow: 0 10px 28px -12px rgba(94, 106, 210, .75); }
+  /* a single sheen crosses the button on hover */
+  .btn.primary::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .28) 50%, transparent 70%); transform: translateX(-110%); transition: transform .8s var(--ease); }
+  .btn.primary:hover::after { transform: translateX(110%); }
   @media (pointer: coarse) { .btn { height: 44px; } }
   .facts { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 36px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--ink-3); }
-  .facts .num { font-size: 15px; margin-right: 4px; }
+  .facts .num { display: inline-block; font-size: 15px; margin-right: 4px; }
+
+  /* ---------- light over the hero: a soft wash, and a dot grid lit where the pointer is ---------- */
+  main { position: relative; isolation: isolate; }
+  .aura { position: absolute; inset: 0 0 auto; height: 860px; z-index: -1; pointer-events: none; overflow: hidden;
+    background: radial-gradient(360px circle at var(--hx, 72%) var(--hy, 30%), var(--glow), transparent 70%);
+    -webkit-mask-image: linear-gradient(#000 45%, transparent); mask-image: linear-gradient(#000 45%, transparent); }
+  .aura::before { content: ""; position: absolute; top: -440px; left: 70%; width: 1200px; height: 860px; transform: translateX(-50%);
+    background: radial-gradient(closest-side, var(--light), transparent); }
+  .aura::after { content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0) 0 0 / 22px 22px;
+    -webkit-mask-image: radial-gradient(400px circle at var(--hx, 72%) var(--hy, 30%), #000, transparent 72%);
+    mask-image: radial-gradient(400px circle at var(--hx, 72%) var(--hy, 30%), #000, transparent 72%); }
 
   /* ---------- sections ---------- */
   section { padding: clamp(44px, 8vw, 72px) 0; border-top: 1px solid var(--line); }
@@ -95,6 +116,14 @@
   /* ---------- projects ---------- */
   .project { border: 1px solid var(--line); border-radius: 16px; background: var(--s1); box-shadow: var(--edge), var(--lift); padding: clamp(20px, 3.5vw, 32px); display: grid; gap: 24px 40px; grid-template-columns: minmax(0, 1fr); }
   .project + .project { margin-top: 24px; }
+  /* a spotlight follows the pointer across the card, and lights its edge */
+  .project { position: relative; isolation: isolate; }
+  .project::before, .project::after { content: ""; position: absolute; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease); }
+  .project::before { inset: 0; z-index: -1; background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 65%); }
+  .project::after { inset: -1px; padding: 1px; background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 0%), var(--glow-edge), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; }
+  @media (hover: hover) and (pointer: fine) { .project:hover::before, .project:hover::after { opacity: 1; } }
   @media (min-width: 860px) { .project { grid-template-columns: minmax(0, 1fr) 15rem; } .project .side { border-left: 1px solid var(--line); padding-left: 32px; } }
   .project h3 { margin: 0; font-size: clamp(22px, 3vw, 26px); font-weight: 600; letter-spacing: -.02em; }
   .project .kicker { margin: 6px 0 0; font-size: 14px; color: var(--ink-3); }
@@ -116,7 +145,10 @@
   .now { border-left: 2px solid var(--accent); padding: 4px 0 4px 20px; max-width: 64ch; }
   .now h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
   .now p { margin: 10px 0 0; color: var(--ink-2); text-wrap: pretty; }
-  .now .status { margin-top: 12px; font-size: 14px; color: var(--ink-3); }
+  .now .status { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 14px; color: var(--ink-3); }
+  .live { position: relative; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .live::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--accent); animation: ping 2.4s var(--ease) infinite; }
+  @keyframes ping { 0% { transform: scale(1); opacity: .6; } 70%, 100% { transform: scale(2.8); opacity: 0; } }
 
   /* ---------- principles ---------- */
   .principles { margin: 0; padding: 0; list-style: none; display: grid; gap: 28px 48px; grid-template-columns: minmax(0, 1fr); }
@@ -134,10 +166,15 @@
   footer { border-top: 1px solid var(--line); }
   footer .wrap { padding-top: 20px; padding-bottom: 36px; font-size: 13px; color: var(--ink-3); }
 
-  /* ---------- motion: the hero settles in once ---------- */
+  /* ---------- motion: the hero settles in once, the rest rises into view ---------- */
   @media (prefers-reduced-motion: no-preference) {
     .rise { animation: rise .7s var(--ease) both; animation-delay: calc(var(--i, 0) * 80ms); }
     @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .aura::before { animation: breathe 11s ease-in-out infinite alternate; }
+    @keyframes breathe { from { opacity: .7; transform: translateX(-50%) scale(1); } to { opacity: 1; transform: translateX(-47%) scale(1.08); } }
+    /* hidden only when the script is there to reveal it */
+    .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--d, 0) * 90ms); }
+    .js .reveal.in { opacity: 1; transform: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -162,6 +199,7 @@
 </header>
 
 <main id="top">
+  <div class="aura" aria-hidden="true"></div>
   <div class="wrap">
     <section class="hero" aria-labelledby="claim">
       <h1 id="claim" class="rise" style="--i:0">I build AI features that refuse to be confidently wrong.</h1>
@@ -186,10 +224,10 @@
 
   <section id="work" aria-labelledby="work-title">
     <div class="wrap">
-      <h2 class="section-title" id="work-title">Work</h2>
-      <p class="section-lead">Each project exists because measuring it changed what I built.</p>
+      <h2 class="section-title reveal" id="work-title">Work</h2>
+      <p class="section-lead reveal">Each project exists because measuring it changed what I built.</p>
 
-      <article class="project" aria-labelledby="ayd">
+      <article class="project reveal" aria-labelledby="ayd">
         <div class="main">
           <h3 id="ayd">Ask Your Data</h3>
           <p class="kicker">A text-to-SQL agent, live on open models</p>
@@ -231,7 +269,7 @@
         </dl>
       </article>
 
-      <article class="project" aria-labelledby="rag">
+      <article class="project reveal" aria-labelledby="rag">
         <div class="main">
           <h3 id="rag">Ask Your Documents</h3>
           <p class="kicker">Hybrid retrieval with cited answers</p>
@@ -273,8 +311,8 @@
 
   <section id="now" aria-labelledby="now-title">
     <div class="wrap">
-      <h2 class="section-title" id="now-title">Now</h2>
-      <div class="now">
+      <h2 class="section-title reveal" id="now-title">Now</h2>
+      <div class="now reveal">
         <h3>AYD-0.1, a 9B SQL agent model</h3>
         <p>
           Fine-tuning <span translate="no">Qwen3.5-9B</span> on execution-verified agent conversations. A 27B teacher,
@@ -282,17 +320,17 @@
           answer is kept only when its final result matches the gold result. Trained and
           measured on free Kaggle GPUs, against the untuned model on the same questions.
         </p>
-        <p class="status">In progress. Results go here once they are measured, not before.</p>
+        <p class="status"><span class="live" aria-hidden="true"></span>In progress. Results go here once they are measured, not before.</p>
       </div>
     </div>
   </section>
 
   <section id="how" aria-labelledby="how-title">
     <div class="wrap">
-      <h2 class="section-title" id="how-title">How I work</h2>
-      <p class="section-lead">Three rules the two projects taught me.</p>
+      <h2 class="section-title reveal" id="how-title">How I work</h2>
+      <p class="section-lead reveal">Three rules the two projects taught me.</p>
       <ul class="principles">
-        <li>
+        <li class="reveal">
           <h3>The evaluation is the product</h3>
           <p>
             Anyone can assemble a pipeline. The useful part is the harness that says when it
@@ -300,7 +338,7 @@
             into the README, including the fixes that did not work.
           </p>
         </li>
-        <li>
+        <li class="reveal">
           <h3>Guardrails are controls, not requests</h3>
           <p>
             Asking a model to “only write SELECT” is a request. Parsing every statement before
@@ -308,7 +346,7 @@
             file-read functions, over a connection that is read-only on its own, is a control.
           </p>
         </li>
-        <li>
+        <li class="reveal">
           <h3>Written by hand first</h3>
           <p>
             The agent loop, retrieval, rank fusion and provider adapters are my own code, because
@@ -322,29 +360,29 @@
 
   <section id="background" aria-labelledby="bg-title">
     <div class="wrap">
-      <h2 class="section-title" id="bg-title">Background</h2>
+      <h2 class="section-title reveal" id="bg-title">Background</h2>
       <ul class="roles">
-        <li>
+        <li class="reveal">
           <h3>AI engineering intern, Alexandria Port Authority</h3>
           <p class="when">January 2025 to February 2026</p>
           <p>Engineered SQL over 800,000+ maritime logistics records, applied regression to the
           drivers of container dwell time, and automated the data validation that had been taking
           five hours a week.</p>
         </li>
-        <li>
+        <li class="reveal">
           <h3>Data analyst trainee, Digital Egypt Pioneers Initiative</h3>
           <p class="when">June 2025 to December 2025</p>
           <p>Cleaned large historical datasets, ran exploratory analysis, and built the Power BI
           reporting a team of four worked from.</p>
         </li>
-        <li>
+        <li class="reveal">
           <h3>B.Sc. Computers and Data Science, Alexandria University</h3>
           <p class="when">Graduating 2027</p>
           <p>Major in Data Science and Artificial Intelligence. Looking for AI engineering roles.
           I read and write English and Arabic.</p>
         </li>
       </ul>
-      <ul class="contact" aria-label="Contact">
+      <ul class="contact reveal" aria-label="Contact">
         <li><a href="mailto:aymaneldaly72@gmail.com">aymaneldaly72@gmail.com</a></li>
         <li><a href="https://github.com/0yman">github.com/0yman</a></li>
         <li><a href="https://linkedin.com/in/ayman-eldaly">linkedin.com/in/ayman-eldaly</a></li>
@@ -356,6 +394,98 @@
 <footer>
   <div class="wrap">Alexandria, Egypt</div>
 </footer>
+
+<script>
+  /* Everything here is decoration: the page reads the same without it. The
+     light follows a mouse, never a finger, and reduced motion turns the
+     moving parts off. */
+  (() => {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mouse = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    // Numbers count up to their real value once, when they come into view.
+    // "1 click" and the like have nothing worth counting, so they stay put.
+    const countUp = (el) => {
+      const text = el.textContent.trim();
+      const m = text.match(/^(\d+)(?:\.(\d+))?(.*)$/);
+      if (calm || !m) return;
+      const places = m[2] ? m[2].length : 0;
+      const target = parseFloat(places ? `${m[1]}.${m[2]}` : m[1]);
+      if (!places && target < 3) return;
+      el.style.minWidth = `${text.length}ch`;
+      const start = performance.now(), ms = 1200;
+      const frame = (now) => {
+        const t = Math.min(1, (now - start) / ms), k = 1 - Math.pow(1 - t, 4);
+        el.textContent = t < 1 ? (target * k).toFixed(places) + m[3] : text;
+        if (t < 1) requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    };
+    const counters = (root) => root.querySelectorAll(".metrics dd:not(.note)").forEach(countUp);
+
+    // Sections rise into view, staggered among their siblings.
+    const reveals = [...document.querySelectorAll(".reveal")];
+    reveals.forEach((el) => el.style.setProperty("--d", [...el.parentElement.children].filter((c) => c.classList.contains("reveal")).indexOf(el)));
+    if (calm || !("IntersectionObserver" in window)) {
+      reveals.forEach((el) => el.classList.add("in"));
+    } else {
+      const seen = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add("in");
+          counters(e.target);
+          seen.unobserve(e.target);
+        }
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+      reveals.forEach((el) => seen.observe(el));
+    }
+    setTimeout(() => document.querySelectorAll(".facts .num").forEach(countUp), 450);
+
+    // The nav marks the section being read.
+    const links = new Map([...document.querySelectorAll(".nav a")].map((a) => [a.hash.slice(1), a]));
+    const spy = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach((a, id) => (id === e.target.id ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
+      }
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    links.forEach((_, id) => { const s = document.getElementById(id); if (s) spy.observe(s); });
+    spy.observe(document.querySelector(".hero"));  // no id: back at the top, nothing is marked
+
+    if (!mouse) return;
+
+    // A spotlight on each project card, where the pointer is.
+    document.querySelectorAll(".project").forEach((card) => {
+      let x = 0, y = 0, raf = 0;
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        x = e.clientX - r.left; y = e.clientY - r.top;
+        raf ||= requestAnimationFrame(() => {
+          card.style.setProperty("--mx", `${x}px`);
+          card.style.setProperty("--my", `${y}px`);
+          raf = 0;
+        });
+      });
+    });
+
+    // The hero's light trails the pointer, easing toward it.
+    const aura = document.querySelector(".aura");
+    if (!aura || calm) return;
+    const r0 = aura.getBoundingClientRect();
+    let cx = r0.width * 0.72, cy = r0.height * 0.3, tx = cx, ty = cy, raf = 0;
+    const step = () => {
+      cx += (tx - cx) * 0.1; cy += (ty - cy) * 0.1;
+      aura.style.setProperty("--hx", `${cx.toFixed(1)}px`);
+      aura.style.setProperty("--hy", `${cy.toFixed(1)}px`);
+      raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.5 ? requestAnimationFrame(step) : 0;
+    };
+    addEventListener("pointermove", (e) => {
+      const r = aura.getBoundingClientRect();
+      tx = e.clientX - r.left; ty = e.clientY - r.top;
+      raf ||= requestAnimationFrame(step);
+    }, { passive: true });
+  })();
+</script>
 
 </body>
 </html>
