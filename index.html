@@ -213,6 +213,13 @@
   .roles h3 { margin: 0; font-size: 16px; font-weight: 600; }
   .roles .when { margin: 2px 0 0; font-size: 13px; color: var(--ink-3); }
   .roles p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
+  .roles .lead { padding-left: 20px; border-left: 2px solid var(--accent); }
+  .roles .lead h3 { font-size: 18px; letter-spacing: -.01em; }
+  .roles .points { margin: 12px 0 0; padding-left: 1.1em; color: var(--ink-2); font-size: 15px; }
+  .roles .points li { text-wrap: pretty; }
+  .roles .points li + li { margin-top: 8px; }
+  .roles .points li::marker { color: var(--line-strong); }
+  .roles .lead .cert { margin: 14px 0 0; font-size: 13px; color: var(--ink-3); }
   .bg-grid { display: grid; gap: 32px 64px; grid-template-columns: minmax(0, 1fr); align-items: start; }
   @media (min-width: 1040px) { .bg-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); } }
   .reach { padding: 22px 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--s1); box-shadow: var(--edge), var(--lift); }
@@ -267,10 +274,11 @@
       <h1 id="claim" class="rise" style="--i:0">I build AI features that refuse to be confidently wrong.</h1>
       <p class="who rise" style="--i:1">AI engineer · retrieval, agents and evaluation</p>
       <p class="intro rise" style="--i:2">
-        Final-year Data Science and AI student at Alexandria University and an ICPC
-        (ECPC) qualifier. Most of what I build is a retrieval pipeline, an agent, or the
-        evaluation harness that decides whether either one is good enough to ship. Every
-        number on this page is in a repository you can run.
+        Final-year Data Science and AI student at Alexandria University, formerly an AI
+        engineering intern at Alexandria Port Authority, and an ICPC (ECPC) qualifier. Most
+        of what I build is a retrieval pipeline, an agent, or the evaluation harness that
+        decides whether either one is good enough to ship. Every project number on this page
+        is in a repository you can run.
       </p>
       <div class="cta rise" style="--i:3">
         <a class="btn primary" href="https://ask-your-data-i67m.onrender.com">Try the live SQL agent</a>
@@ -458,12 +466,19 @@
       <h2 class="section-title reveal" id="bg-title">Background</h2>
       <div class="bg-grid">
       <ul class="roles">
-        <li class="reveal">
+        <li class="reveal lead">
           <h3>AI engineering intern, Alexandria Port Authority</h3>
           <p class="when">January 2025 to February 2026</p>
-          <p>Engineered SQL over 800,000+ maritime logistics records, applied regression to the
-          drivers of container dwell time, and automated the data validation that had been taking
-          five hours a week.</p>
+          <ul class="points">
+            <li>Engineered the SQL (joins, aggregations, window functions) that extracted, cleaned and
+              transformed <span class="num">800,000+</span> maritime logistics records into
+              model-ready datasets, and made retrieval <span class="num">25%</span> faster.</li>
+            <li>Built a linear regression model on container dwell time, identified its key drivers
+              and presented the findings to operations.</li>
+            <li>Automated data-quality checks on the daily cargo-log ingestion in Python, enforcing
+              integrity constraints and saving <span class="num">5+</span> hours a week.</li>
+          </ul>
+          <p class="cert">AI Engineering Intern Certificate · Alexandria Port Authority · February 2026</p>
         </li>
         <li class="reveal">
           <h3>Data analyst trainee, Digital Egypt Pioneers Initiative</h3>
